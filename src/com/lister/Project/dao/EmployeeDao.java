@@ -31,7 +31,7 @@ public class EmployeeDao {
 	 */
 	@Transactional
 	public void saveEmployee(Employee e){  
-	    template.save(e);  
+	    template.save(e);
 	}  
 	//method to update employee  
 	/**
@@ -79,7 +79,7 @@ public class EmployeeDao {
 		//param[1]="salary";
 		val[0]=name;
 		System.out.println(name);
-		list=template.findByNamedQueryAndNamedParam("findEmployeeByName","name",name);
+		list= (List<Employee>) template.findByNamedQueryAndNamedParam("findEmployeeByName","name",name);
 		//list=template.findByNamedQueryAndNamedParam("findEmployeesAboveSal", param, val);
 		return list;
 	}

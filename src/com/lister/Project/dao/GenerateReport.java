@@ -1,11 +1,7 @@
 package com.lister.Project.dao;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,16 +13,25 @@ import com.crystaldecisions.sdk.occa.report.application.ReportClientDocument;
 import com.crystaldecisions.sdk.occa.report.exportoptions.ReportExportFormat;
 import com.crystaldecisions.sdk.occa.report.lib.ReportSDKException;
 
+import javax.servlet.ServletContext;
+
 /**
  * @author souvik.p
  *
  */
 public class GenerateReport {
-	private static final String db_user="system";
-	private static final String db_pwd="kroger";
-	private static final String db_url="jdbc:oracle:thin:@localhost:1521:xe";
-	private static final String db_driver="oracle.jdbc.driver.OracleDriver";
+//	private static final String db_user="system";
+//	private static final String db_pwd="kroger";
+//	private static final String db_url="jdbc:oracle:thin:@localhost:1521:xe";
+//	private static final String db_driver="oracle.jdbc.driver.OracleDriver";
+
+	private static final String db_user="sa";
+	private static final String db_pwd="";
+	private static final String db_url="jdbc:h2:tcp://localhost/~/test";
+	private static final String db_driver="org.h2.Driver";
 	//private static final Logger logger=;
+
+	private static final String sampleReportFilePath = "C://sample1.rpt";
 	
 	/**
 	 * @return
@@ -35,7 +40,13 @@ public class GenerateReport {
 	 */
 	public boolean generate() throws ReportSDKException, IOException{
 		ReportClientDocument rcd=new ReportClientDocument();
-	    rcd.open("D://Report Templates/sample1.rpt", 0);
+
+
+		String filePath= getClass().getClassLoader().getResource("sample1.rpt").getPath();
+
+
+		System.out.println(filePath);
+	    rcd.open(filePath, 0);
 	    CRJavaHelper crj=new CRJavaHelper();
 	    crj.changeDataSource(rcd, db_user, db_pwd, db_url, db_driver, "");
 		crj.logonDataSource(rcd, db_user, db_pwd);
@@ -51,7 +62,7 @@ public class GenerateReport {
 	    	String currentDate=new SimpleDateFormat("dd_MM_yyyy_hh_mm_ss_a'.pdf'").format(new Date());
 	    	System.out.println(currentDate);
 	    	String fname="Employee"+"_"+currentDate;
-	    	String directory="D://GeneratedReports";
+	    	String directory="C://reports";
 	    	String path=directory+"/"+fname;
 			File file = new File(path);
 		    FileOutputStream fileOutputStream = new FileOutputStream(file);
